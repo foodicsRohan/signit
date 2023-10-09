@@ -11,7 +11,7 @@
         $totalPages = counts($decodedData);
         echo $totalPages;
     } else {
-        echo “No pages found“;
+        echo "No pages found";
     }
 
     function counts($data)
