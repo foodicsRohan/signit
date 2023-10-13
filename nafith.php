@@ -2,7 +2,7 @@
 
 
 // CONSTANTS:
-include 'NafithVariable.php';
+include 'Constant.php';
 
 // CODE BASE
 /*
