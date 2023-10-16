@@ -164,6 +164,7 @@ function createSanad(string $filedata, string $accessToken , string $sigantor ,$
 // function main(): void
 // {
     $accessToken = getAccessToken($NafithTokenURL,$Authorization);
+die();
     $bodyData = getFileContent();
 
     // PARAMETERS PASSED TO CREATE SIGNATOR
