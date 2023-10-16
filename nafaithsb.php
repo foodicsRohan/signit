@@ -62,6 +62,8 @@ function getAccessToken(string $NafithTokenURL1,string $Authorization1): string
       ));
    // Execute the cURL request and capture the response
     $response = curl_exec($ch);
+    print_r($response);
+    die();
     //debugToScreen("response we got back is: $response");
     $responseDecoded = json_decode($response);
     $accessToken = $responseDecoded->access_token;
