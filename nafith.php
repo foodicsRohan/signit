@@ -27,6 +27,8 @@ function debugToScreen(string $message): void
  */
 function getAccessToken(string $NafithTokenURL1,string $Authorization1): string
 {
+    echo $NafithTokenURL1;
+    echo $Authorization1;
     $ch = curl_init();
     // Define the request parameters
     $requestParams = array(
