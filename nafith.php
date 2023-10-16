@@ -19,7 +19,7 @@ function debugToScreen(string $message): void
 /*
  * function that gets that call the api to obtain access point.
  */
-function getAccessToken(): string
+function getAccessToken(string $NafithTokenURL1,string $Authorization1): string
 {
     $ch = curl_init();
     // Define the request parameters
@@ -34,7 +34,7 @@ function getAccessToken(): string
 
    // Set cURL options
     curl_setopt_array($ch, array(
-        CURLOPT_URL => $NafithTokenURL,
+        CURLOPT_URL => $NafithTokenURL1,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -45,7 +45,7 @@ function getAccessToken(): string
         CURLOPT_POSTFIELDS => $requestBody,
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/x-www-form-urlencoded',
-            'Authorization:Basic '. $Authorization,
+            'Authorization:Basic '. $Authorization1,
             'Host: sandbox.nafith.sa',
             'Content-Length: ' . $contentLength,
             'X-Nafith-Signature: T7SQpC+0HVUjkqjQFyHSw4iHqcEtWP3yyDqcIw/PziE=',
@@ -114,7 +114,7 @@ function getAccessToken(): string
 /*
  Function TO CREATE A SANAD IN NAFITH 
 */
-function createSanad(string $filedata, string $accessToken , string $sigantor): string
+function createSanad(string $filedata, string $accessToken , string $sigantor ,$CreateSanadURL1): string
 {
     // Generate a timestamp
     $timestamp = time() * 1000; // Convert the current UNIX timestamp to milliseconds
@@ -122,7 +122,7 @@ function createSanad(string $filedata, string $accessToken , string $sigantor): 
   $curl = curl_init();
 
     curl_setopt_array($curl, array(
-        CURLOPT_URL => $CreateSanadURL,
+        CURLOPT_URL => $CreateSanadURL1,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -153,25 +153,25 @@ function createSanad(string $filedata, string $accessToken , string $sigantor): 
  * main function, takes nothing and print out the document id returned by the api
  * it first get the access token and then upload a document
  */
-function main(): void
-{
-    $accessToken = getAccessToken();
+// function main(): void
+// {
+    $accessToken = getAccessToken($NafithTokenURL,$Authorization);
     $bodyData = getFileContent();
 
     // PARAMETERS PASSED TO CREATE SIGNATOR
     $method = "POST";
     $endpoint = "/api/sanad-group/";
     $sanad_object = "";
-    // $secret_key = $secret_key;
+     $secret_key1 = $secret_key;
     $unix_timestamp =  time() * 1000;
-    $MainContent = calculateHmacSignature($bodyData, $method, "nafith.sa", $endpoint, $sanad_object, $unix_timestamp, $secret_key);
-    $documentId = createSanad($bodyData, $accessToken,$MainContent );
+    $MainContent = calculateHmacSignature($bodyData, $method, "nafith.sa", $endpoint, $sanad_object, $unix_timestamp, $secret_key1);
+    $documentId = createSanad($bodyData, $accessToken,$MainContent ,$CreateSanadURL);
    // print "document id obtained is: " . $documentId; // Print the document ID
-}
+// }
 
 /*
  * call the main function
  */
-main();
+// main();
 
 ?>
