@@ -1,6 +1,7 @@
 <?php
 echo 'thisis test';
 phpinfo();
+die();
 
 // CONSTANTS:
 // include 'NafithVariable.php';
