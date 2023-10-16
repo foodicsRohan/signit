@@ -1,5 +1,5 @@
 <?php
-
+phpinfo();
 
 // CONSTANTS:
 // include 'NafithVariable.php';
