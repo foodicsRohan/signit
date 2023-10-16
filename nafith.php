@@ -58,7 +58,7 @@ function getAccessToken(string $NafithTokenURL1,string $Authorization1): string
             'Content-Length: ' . $contentLength,
             'X-Nafith-Signature: T7SQpC+0HVUjkqjQFyHSw4iHqcEtWP3yyDqcIw/PziE=',
         ),
-        CURLOPT_SSL_VERIFYPEER => null, // Disable SSL certificate verification
+      //  CURLOPT_SSL_VERIFYPEER => null, // Disable SSL certificate verification
       ));
    // Execute the cURL request and capture the response
     $response = curl_exec($ch);
@@ -146,7 +146,7 @@ function createSanad(string $filedata, string $accessToken , string $sigantor ,$
             'X-Nafith-Signature:' . $sigantor,
             'Authorization: Bearer ' . $accessToken
         ),
-        CURLOPT_SSL_VERIFYPEER => null, // Disable SSL certificate verification
+      //  CURLOPT_SSL_VERIFYPEER => null, // Disable SSL certificate verification
     ));
 
     $response = curl_exec($curl);
