@@ -1,4 +1,5 @@
 <?php
+echo 'thisis test';
 phpinfo();
 
 // CONSTANTS:
