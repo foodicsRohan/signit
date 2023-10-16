@@ -27,8 +27,6 @@ function debugToScreen(string $message): void
  */
 function getAccessToken(string $NafithTokenURL1,string $Authorization1): string
 {
-    echo $NafithTokenURL1;
-    echo $Authorization1;
     $ch = curl_init();
     // Define the request parameters
     $requestParams = array(
@@ -62,8 +60,6 @@ function getAccessToken(string $NafithTokenURL1,string $Authorization1): string
       ));
    // Execute the cURL request and capture the response
     $response = curl_exec($ch);
-    print_r($response);
-    die();
     //debugToScreen("response we got back is: $response");
     $responseDecoded = json_decode($response);
     $accessToken = $responseDecoded->access_token;
