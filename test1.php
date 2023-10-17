@@ -43,7 +43,7 @@ function getAccessToken(): string
     echo  $accessToken ;
     return $accessToken;
 }
-
+echo "Hello";
 getAccessToken();
 
 ?>
