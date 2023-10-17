@@ -16,9 +16,9 @@ $CreateSanadURL = 'https://sandbox.nafith.sa/api/sanad-group/';
  */
 function debugToScreen(string $message): void
 {
-    if (CODE_DEBUG_FLAG) {
+   // if (CODE_DEBUG_FLAG) {
         print "DEBUG MESSAGE: $message\r\n";
-    }
+    //}
 
 }
 
