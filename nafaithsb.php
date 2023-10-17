@@ -25,7 +25,7 @@ function debugToScreen(string $message): void
 /*
  * function that gets that call the api to obtain access point.
  */
-function getAccessToken(string $NafithTokenURL1,string $Authorization1): string
+function getAccessToken(string $NafithTokenURL1,string $Authorization1)
 {
     $ch = curl_init();
     // Define the request parameters
