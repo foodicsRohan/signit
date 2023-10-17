@@ -3,7 +3,7 @@
 
 function getAccessToken(): string
 {
-    echo "in function";
+    print_r('in function');
     $ch = curl_init();
     // Define the request parameters
     $requestParams = array(
