@@ -60,6 +60,7 @@ function getAccessToken(string $NafithTokenURL1,string $Authorization1): string
       ));
    // Execute the cURL request and capture the response
     $response = curl_exec($ch);
+    print_r($response);
     //debugToScreen("response we got back is: $response");
     $responseDecoded = json_decode($response);
     $accessToken = $responseDecoded->access_token;
@@ -162,7 +163,7 @@ function createSanad(string $filedata, string $accessToken , string $sigantor ,$
 // function main(): void
 // {
     $accessToken = getAccessToken($NafithTokenURL,$Authorization);
-//die();
+die();
     $bodyData = getFileContent();
 
     // PARAMETERS PASSED TO CREATE SIGNATOR
