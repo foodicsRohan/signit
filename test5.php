@@ -127,7 +127,7 @@ function createSanad(string $filedata, string $accessToken , string $sigantor ,$
   $curl = curl_init();
 
     curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://sandbox.nafith.sa/api/sanad-group/",
+        CURLOPT_URL => $CreateSanadURL1,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
