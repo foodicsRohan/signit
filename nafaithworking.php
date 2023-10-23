@@ -4,10 +4,10 @@
 // CONSTANTS:
 // include 'NafithVariable.php';
 
-$Authorization = "MnlkZnJjWVBNOVNyWW9lZU5pcWR5ZDNkVDJkdzdmeTVyWFJnMVhXajpPakRiVXFNSEVlcDdQUUVvVnRpTmJhUWpnYnc2MlUxTG5TU2c4cnBkRW1CZlRHQTFGSW9KNTNQY3dKMDVQWTllZW5aMTNHTExXZ2p4emg4eW9TQlo0aVViSTZSenI0WUI5QnR2amltVUF3eDE5M3lNU3RnS3ZFMHlhUjQyOWxldQ==";
-$secret_key = "rwGoV7s8dBY1J7zZjcJAjWOazEVs0dIsEw7KUHEkiBAwUcTnmQV8pgXkMCrXdIVNQLguTNTwQPW4aj81rM42TIJcY3UC22iOhuTDq1ZxsYa0IggWpu2qjf1LwhexDqrs";
-$NafithTokenURL = 'https://sandbox.nafith.sa/api/oauth/token/';
-$CreateSanadURL = 'https://sandbox.nafith.sa/api/sanad-group/';
+$Authorization = "UmVEaTFiR1NBSGFlNGF0NEF2Q3d1YkVyMEhZUEhWWVhpRnloSURmVjpJZTRKN0hIdlNwbXJvT3hhOE1mT1JoQkdiaDNneVFmNXVxUTFDZGZZMVp5UDNOSkhOcUZ1ZEtoSUlIb2ZHYjROeDdPdlUyc0I5dkxlN2F6YWNaa1JudVZHYlJGckowNk9UMjRiVmg2cUtSZE1SZmdPMzdkMzFTWFFQQ1ZHeWtLSA==";
+$secret_key = "Ks66IHIciDn0Oq2OAQFfKRYEXg21RRoKbGlvOuFmFrLI4pkfBexqOBsQ18T8i2QRpaUrrEhCB401GnLucJbNlPNfjL9E9HXQc7ydRmXD5iIORhMBaIpv1e4b0DDpS7ZE";
+$NafithTokenURL = 'https://nafith.sa/api/oauth/token/';
+$CreateSanadURL = 'https://nafith.sa/api/sanad-group/';
 
 
 // CODE BASE
@@ -52,7 +52,7 @@ function getAccessToken(string $NafithTokenURL1,string $Authorization1): string
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/x-www-form-urlencoded',
             'Authorization:Basic '.$Authorization1,
-            'Host: sandbox.nafith.sa',
+            'Host: nafith.sa',
             'Content-Length: ' . $contentLength,
             'X-Nafith-Signature: T7SQpC+0HVUjkqjQFyHSw4iHqcEtWP3yyDqcIw/PziE=',
         ),
@@ -168,7 +168,7 @@ function createSanad(string $filedata, string $accessToken , string $sigantor ,$
     $method = "POST";
     $endpoint = "/api/sanad-group/";
     $sanad_object = "";
-     $secret_key1 = "rwGoV7s8dBY1J7zZjcJAjWOazEVs0dIsEw7KUHEkiBAwUcTnmQV8pgXkMCrXdIVNQLguTNTwQPW4aj81rM42TIJcY3UC22iOhuTDq1ZxsYa0IggWpu2qjf1LwhexDqrs";
+     $secret_key1 = "Ks66IHIciDn0Oq2OAQFfKRYEXg21RRoKbGlvOuFmFrLI4pkfBexqOBsQ18T8i2QRpaUrrEhCB401GnLucJbNlPNfjL9E9HXQc7ydRmXD5iIORhMBaIpv1e4b0DDpS7ZE";
     $unix_timestamp =  time() * 1000;
     $MainContent = calculateHmacSignature($bodyData, $method, "nafith.sa", $endpoint, $sanad_object, $unix_timestamp, $secret_key1);
     $documentId = createSanad($bodyData, $accessToken,$MainContent ,$CreateSanadURL);
