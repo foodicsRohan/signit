@@ -147,7 +147,7 @@ function createSanad(string $filedata, string $accessToken , string $sigantor ,$
     ));
 
     $response = curl_exec($curl);
-   // debugToScreen("Create Sanad : $response");
+    debugToScreen("Create Sanad : $response");
       $responseDecoded = json_decode($response);
      // $SanadID =  $responseDecoded->id;
     $SanadID = $responseDecoded->sanad[0]->number;
