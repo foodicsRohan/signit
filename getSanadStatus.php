@@ -2,12 +2,12 @@
 
 
 // CONSTANTS:
-// include 'NafithVariable.php';
+//include 'NafithVariable.php';
 
-$Authorization = "UmVEaTFiR1NBSGFlNGF0NEF2Q3d1YkVyMEhZUEhWWVhpRnloSURmVjpJZTRKN0hIdlNwbXJvT3hhOE1mT1JoQkdiaDNneVFmNXVxUTFDZGZZMVp5UDNOSkhOcUZ1ZEtoSUlIb2ZHYjROeDdPdlUyc0I5dkxlN2F6YWNaa1JudVZHYlJGckowNk9UMjRiVmg2cUtSZE1SZmdPMzdkMzFTWFFQQ1ZHeWtLSA==";
-$secret_key = "Ks66IHIciDn0Oq2OAQFfKRYEXg21RRoKbGlvOuFmFrLI4pkfBexqOBsQ18T8i2QRpaUrrEhCB401GnLucJbNlPNfjL9E9HXQc7ydRmXD5iIORhMBaIpv1e4b0DDpS7ZE";
-$NafithTokenURL = 'https://nafith.sa/api/oauth/token/';
-$getStatusURL = 'https://nafith.sa/api/sanad-group/status/';
+$Authorization = "MnlkZnJjWVBNOVNyWW9lZU5pcWR5ZDNkVDJkdzdmeTVyWFJnMVhXajpPakRiVXFNSEVlcDdQUUVvVnRpTmJhUWpnYnc2MlUxTG5TU2c4cnBkRW1CZlRHQTFGSW9KNTNQY3dKMDVQWTllZW5aMTNHTExXZ2p4emg4eW9TQlo0aVViSTZSenI0WUI5QnR2amltVUF3eDE5M3lNU3RnS3ZFMHlhUjQyOWxldQ==";
+$secret_key = "rwGoV7s8dBY1J7zZjcJAjWOazEVs0dIsEw7KUHEkiBAwUcTnmQV8pgXkMCrXdIVNQLguTNTwQPW4aj81rM42TIJcY3UC22iOhuTDq1ZxsYa0IggWpu2qjf1LwhexDqrs";
+$NafithTokenURL = 'https://sandbox.nafith.sa/api/oauth/token/';
+$CreateSanadURL = 'https://sandbox.nafith.sa/api/sanad-group/';
 
 
 // CODE BASE
@@ -16,9 +16,7 @@ $getStatusURL = 'https://nafith.sa/api/sanad-group/status/';
  */
 function debugToScreen(string $message): void
 {
-   // if (CODE_DEBUG_FLAG) {
         print "DEBUG MESSAGE: $message\r\n";
-    //}
 
 }
 
@@ -52,7 +50,7 @@ function getAccessToken(string $NafithTokenURL1,string $Authorization1): string
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/x-www-form-urlencoded',
             'Authorization:Basic '.$Authorization1,
-            'Host: nafith.sa',
+            'Host: sandbox.nafith.sa',
             'Content-Length: ' . $contentLength,
             'X-Nafith-Signature: T7SQpC+0HVUjkqjQFyHSw4iHqcEtWP3yyDqcIw/PziE=',
         ),
@@ -67,11 +65,25 @@ function getAccessToken(string $NafithTokenURL1,string $Authorization1): string
     return $accessToken;
 }
 
-
+/*
+  Get The Nafith Body From Apex CLASS CALL 
+*/
+  function getFileContent(): string
+  {
+          $rawPayload = file_get_contents('php://input');
+          // Decode the input JSON
+          $inputData = json_decode($rawPayload, true);
+          $inputData2 = $inputData['data'];
+     //    debugToScreen("inputData : $inputData2\n");
+          return $inputData2;
+ }
+ getFileContent();
+ 
  /*
-   CREATE A SIGNATOR FOR CREATE SANAD
+   CREATE A SIGNATOR FOR GET  SANAD
  */
-   function calculateHmacSignature($data = null,
+ 
+   function calculateHmacSignatureGet($data = null,
                                 $method = null,
                                 $connection_url = "nafith.sa",
                                 $targeted_endpoint = null,
@@ -86,93 +98,64 @@ function getAccessToken(string $NafithTokenURL1,string $Authorization1): string
 
     $signature = hash_hmac('sha256', $message, $secret_key, true);
     $calculated_signature = base64_encode($signature);
-    debugToScreen("HMAC Signature : $calculated_signature\n");
+  //  debugToScreen("HMAC Signature : $calculated_signature\n");
      return $calculated_signature;
 }
 
 
-/*
-  Get The Nafith Body From Apex CLASS CALL 
-*/
-  function getFileContent(): string
-  {
-      $rawPayload = file_get_contents('php://input');
-        // Decode the input JSON
-        $inputData = json_decode($rawPayload, true);
 
-        // Get the nested JSON from the "data" field and decode it
-        $nestedJson = json_decode($inputData['data'], true);
-
-        // Merge the nested JSON back into the main structure
-        $inputData['data'] = $nestedJson;
-
-        // Re-encode the entire structure (if necessary)
-        $outputJson = json_encode($inputData['data']);
-        // Print the corrected JSON
-        
-       //  debugToScreen("FileData  is: $outputJson");
-
-        
-          return $outputJson;
- }
 
 /*
- Function TO CREATE A SANAD IN NAFITH 
+ Function TO GET A SANAD FROM NAFITH 
 */
-function createSanad(string $filedata, string $accessToken , string $sigantor ,$CreateSanadURL1): string
+
+function getSanad(string $filedata, string $accessToken , string $sigantor ,string $SanadID): string
 {
-    // Generate a timestamp
-    $timestamp = time() * 1000; // Convert the current UNIX timestamp to milliseconds
-     // debugToScreen("filedata : $filedata");
-  $curl = curl_init();
 
+     $bodyData= "{}";
+     $method = "GET";
+     $endpoint = "/api/sanad/by-number/";
+     $sanad_object =getFileContent();
+     $secret_key1 = "rwGoV7s8dBY1J7zZjcJAjWOazEVs0dIsEw7KUHEkiBAwUcTnmQV8pgXkMCrXdIVNQLguTNTwQPW4aj81rM42TIJcY3UC22iOhuTDq1ZxsYa0IggWpu2qjf1LwhexDqrs";
+     $unix_timestamp =  time() * 1000;
+     $MainContent = calculateHmacSignatureGet($bodyData, $method, "nafith.sa", $endpoint, $sanad_object, $unix_timestamp, $secret_key1);
+     $SanadNumber = getFileContent();
+   // Generate a timestamp
+    $timestamp = time() * 1000; // Convert the current UNIX timestamp to milliseconds
+     $filedata2 = "{}";
+     // debugToScreen("filedata : $filedata");
+    $curl = curl_init();
+   // debugToScreen("Get Sanad URL    we got back is:   $SanadID");
     curl_setopt_array($curl, array(
-        CURLOPT_URL => $CreateSanadURL1,
+        CURLOPT_URL => "https://sandbox.nafith.sa/api/sanad/by-number/".$SanadNumber,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
         CURLOPT_TIMEOUT => 0,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => $filedata,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_POSTFIELDS => $filedata2,
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',
             'X-Nafith-Timestamp:'.$timestamp,
             'X-Nafith-Tracking-Id: 145',
-            'X-Nafith-Signature:' . $sigantor,
+            'X-Nafith-Signature:' .  $MainContent,
             'Authorization: Bearer ' . $accessToken
         ),
         CURLOPT_SSL_VERIFYPEER => null, // Disable SSL certificate verification
     ));
 
-    $response = curl_exec($curl);
-   // debugToScreen("Create Sanad : $response");
+      $response = curl_exec($curl);
+     // debugToScreen("Create Sanad : $response");
       $responseDecoded = json_decode($response);
-      //$SanadID =  $responseDecoded->id;
-    $SanadID = $responseDecoded->sanad[0]->number;
-      debugToScreen("SanadID  we got back is:  $SanadID");
-    return $response; // Return the response
-}
+      $SanadStatus =  $responseDecoded->status;
+      debugToScreen("Get Sanad Status   we got back is:   $SanadStatus ");
 
-/*
- * main function, takes nothing and print out the document id returned by the api
- * it first get the access token and then upload a document
- */
-// function main(): void
-// {
+       return $response; // Return the response
+    }
     $accessToken = getAccessToken($NafithTokenURL,$Authorization);
-
-    $bodyData = getFileContent();
-
-    // PARAMETERS PASSED TO CREATE SIGNATOR
-    $method = "POST";
-    $endpoint = "/api/sanad-group/";
-    $sanad_object = "";
-    $secret_key1 = "Ks66IHIciDn0Oq2OAQFfKRYEXg21RRoKbGlvOuFmFrLI4pkfBexqOBsQ18T8i2QRpaUrrEhCB401GnLucJbNlPNfjL9E9HXQc7ydRmXD5iIORhMBaIpv1e4b0DDpS7ZE";
-    $unix_timestamp =  time() * 1000;
-    $MainContent = calculateHmacSignature($bodyData, $method, "nafith.sa", $endpoint, $sanad_object, $unix_timestamp, $secret_key1);
-    $sanadStatus = getSanadStatus($bodyData, $accessToken,$MainContent ,$getStatusURL);
-
-
+    $MainContent = '';
+    $CreateSanadURL = '';
+    getSanad("{}",$accessToken,$MainContent ,$CreateSanadURL);
 ?>
