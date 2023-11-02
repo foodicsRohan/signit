@@ -152,6 +152,8 @@ function createSanad(string $filedata, string $accessToken , string $sigantor ,$
      // $SanadID =  $responseDecoded->id;
     $SanadID = $responseDecoded->sanad[0]->number;
       debugToScreen("SanadID  we got back is:  $SanadID");
+     $SanadStatus = $responseDecoded->sanad[0]->status;
+    debugToScreen("SanadStatus  we got back is:  $SanadStatus");
     return $response; // Return the response
 }
 
